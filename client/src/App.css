@@ -3,13 +3,6 @@
   padding: 0 15px;
 }
 
-.page-header {
-    border: 1px solid #000000;
-    padding: 5px;
-    font-size: 12px;
-    margin-bottom: 20px;
-}
-
 .right-align {
     text-align: right;
 }
@@ -17,9 +10,17 @@
 .dark-button {
     border: 2px solid #000000;
     font-weight: bold;
-    height: 28px;
+    display: inline-flex;
 }
-.dark-button:disabled span:first-child {
+
+.dark-button span:last-child {
+  padding: 5px;
+}
+.dark-button[disabled] {
+  pointer-events: none;
+  cursor: default;
+}
+.dark-button[disabled] span:first-child {
   background-color: gray;
 }
 
@@ -27,10 +28,6 @@
     background-color: purple;
     padding: 5px;
     color: #ffffff;
-}
-
-.dark-button span:last-child {
-    padding: 5px;
 }
 
 .product-container {

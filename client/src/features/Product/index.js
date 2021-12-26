@@ -1,5 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom';
+import Header from '../../component/Header';
 import ProductTile from '../../component/ProductTile';
 import { selectCart, addToCart } from '../../reducer/globalSlice';
 import { fetchProductsAsync, selectProduct } from './productSlice'
@@ -19,9 +21,7 @@ function Product() {
 
     return (
         <>
-            <div className='page-header'>
-                <h1>Product List View</h1>
-            </div>
+            <Header title='Product List View' />
             <div className='container'>
                 <div className='right-align'>
                     <button type="button" className='dark-button'>
@@ -39,9 +39,9 @@ function Product() {
                     ))}
                 </div>
                 <div className='right-align'>
-                    <button disabled={cart.length === 0} type="button" className='dark-button'>
+                    <Link disabled={cart.length === 0 ? 'disabled': ''} to='/checkout' type="button" className='dark-button'>
                         <span>Proceed To Checkout</span>
-                    </button>
+                    </Link>
                 </div>
             </div>
         </>
