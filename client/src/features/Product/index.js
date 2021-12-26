@@ -16,7 +16,7 @@ function Product() {
     }, []);
     
     const _addToBasket = useCallback((item) => {
-        dispatch(addToCart(item))
+        dispatch(addToCart({ ...item, qty: 1 }))
     }, [dispatch]);
 
     return (

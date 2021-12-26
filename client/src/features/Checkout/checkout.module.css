@@ -1,0 +1,70 @@
+.checkoutHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.cta {
+    border: 1px solid #000000;
+    background-color: blue;
+    color: #ffffff;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.cartItem {
+    display: flex;
+    justify-content: space-between;
+    width: 50%;
+    margin: 0 auto 15px;
+}
+
+.name {
+    width: 30%;
+}
+
+.text {
+    width: 40px;
+}
+
+.price {
+    width: 10%;
+}
+
+.summaryContainer {
+    width: 50%;
+    margin: 0 auto;
+    margin-top: 50px;
+}
+
+.summary {
+    display: flex;
+}
+
+.label {
+    color: blue;
+    text-align: right;
+    width: 80%;
+    padding-right: 30px;
+}
+
+.value {
+    text-align: left;
+    width: 20%;
+}
+
+.promoContainer {
+    display: flex;
+    justify-content: center;
+    margin: 30px 0;
+}
+
+.labelPromo {
+    color: blue;
+    margin-right: 12px;
+}
+
+.promoText {
+    margin-right: 10px;
+}
