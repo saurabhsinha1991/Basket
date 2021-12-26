@@ -2,16 +2,21 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './ProductTile.module.css';
 
-function ProductTile({ item, addToBasket }) {
+function ProductTile({ item, addToBasket, isAdded }) {
     const { name, price, description } = item;
     return (
         <div className={styles.product}>
-            <div>
+            <div className={styles.title}>
                 <h4>{name}</h4>
                 <p>{description}</p>
             </div>
             <div>{price}</div>
-            <button onClick={() => addToBasket(item)} type='button' className={styles.addToBasket}>Add to basket</button>
+            <button
+                onClick={() => addToBasket(item)}
+                type='button'
+                className={styles.addToBasket}
+                disabled={isAdded}
+            >Add to basket</button>
         </div>
     )
 };
@@ -21,8 +26,9 @@ ProductTile.propTypes = {
         name: PropTypes.string.isRequired,
         description: PropTypes.string.isRequired,
         price: PropTypes.number.isRequired,
-        addToBasket: PropTypes.func.isRequired,
     }).isRequired,
+    addToBasket: PropTypes.func.isRequired,
+    isAdded: PropTypes.bool.isRequired,
 };
 
 export default ProductTile;

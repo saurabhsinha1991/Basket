@@ -3,14 +3,13 @@ import { fetchProducts } from './ProductAPI';
 
 const initialState = {
     products: [],
-    cart: [],
     loading: false,
 };
 
 export const fetchProductsAsync = createAsyncThunk(
     'product/fetchProducts',
-    async (amount) => {
-      const response = await fetchProducts(amount);
+    async () => {
+      const response = await fetchProducts();
       return response;
     }
 );
@@ -18,11 +17,6 @@ export const fetchProductsAsync = createAsyncThunk(
 export const productSlice = createSlice({
     name: 'product',
     initialState,
-    reducers: {
-        addToCart: (state, action) => {
-            state.cart.push(action.payload);
-        }
-    },
     extraReducers: (builder) => {
         builder
           .addCase(fetchProductsAsync.pending, (state) => {
@@ -36,8 +30,6 @@ export const productSlice = createSlice({
 });
 
 export const selectProduct = (state) => state.product.products;
-
-export const selectCart = (state) => state.product.cart;
 
 export const { addToCart } = productSlice.actions;
 
