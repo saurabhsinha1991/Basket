@@ -1,18 +1,28 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Header from '../../component/Header';
-import { editQty, selectCart, removeItem, selectSubTotal, selectPromoAmount, selectBasketTotal } from '../../reducer/globalSlice';
+import { editQty, selectCart, removeItem, selectSubTotal, selectPromoAmount, selectBasketTotal, validatePromoAsync, selectPromoError, selectCardNumber, setCreditCard, checkoutAsync, selectCheckoutMsg } from '../../reducer/globalSlice';
 import styles from './checkout.module.css';
 
 function Checkout() {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const cart = useSelector(selectCart);
     const subTotal = useSelector(selectSubTotal);
     const promoAmount = useSelector(selectPromoAmount);
     const basketTotal = useSelector(selectBasketTotal);
+    const promoError = useSelector(selectPromoError);
+    const cardNo = useSelector(selectCardNumber);
+    const checkoutMsg = useSelector(selectCheckoutMsg);
     
     const [promoText, setPromoText] = useState('');
+    
+    useEffect(() => {
+        if (checkoutMsg.length > 0) {
+            navigate('/summary');
+        }
+    }, [checkoutMsg]);
     
     const _onChangeField = useCallback((e, item) => {
         dispatch(editQty({ ...item, qty: Number(e.target.value) }));
@@ -23,8 +33,17 @@ function Checkout() {
     }, [dispatch, removeItem]);
     
     const _onApply = useCallback(() => {
-        debugger;
+        dispatch(validatePromoAsync(promoText));
     }, [promoText]);
+    
+    const _onCheckout = useCallback(() => {
+        const data = {
+            basket: cart.map(({ sku, qty }) => ({ sku, quantity: qty })),
+            cardNumber: cardNo,
+        };
+        dispatch(checkoutAsync(data));
+    }, [cart, cardNo]);
+
     
     return (
         <>
@@ -61,12 +80,15 @@ function Checkout() {
                 </div>
                 <div className={styles.promoContainer}>
                     <div className={styles.labelPromo}>Enter Promo Code</div>
-                    <input
-                        type='text'
-                        className={styles.promoText}
-                        value={promoText}
-                        onChange={(e) => setPromoText(e.target.value)}
-                    />
+                    <div>
+                        <input
+                            type='text'
+                            className={`${styles.promoText} ${promoError.length > 0 ? styles.error: ''}`}
+                            value={promoText}
+                            onChange={(e) => setPromoText(e.target.value)}
+                        />
+                        <span className={styles.errorText}>{promoError}</span>
+                    </div>
                     <button
                         type='button'
                         className={styles.cta}
@@ -86,6 +108,25 @@ function Checkout() {
                         <div className={styles.label}>Basket Total</div>
                         <div className={styles.value}>{basketTotal}</div>
                     </div>
+                </div>
+                <div className={styles.promoContainer}>
+                    <div className={styles.labelPromo}>Please Enter your card number</div>
+                    <div>
+                        <input
+                            type='text'
+                            className={`${styles.promoText}`}
+                            value={cardNo}
+                            onChange={(e) => dispatch(setCreditCard(e.target.value))}
+                            type="number"
+                        />
+                    </div>
+                </div>
+                <div className={styles.textRight}>
+                    <button
+                        type='button'
+                        className={styles.cta}
+                        onClick={_onCheckout}
+                    >Checkout</button>
                 </div>
             </div>
         </>
